@@ -16,6 +16,26 @@ public class Line {
         return end;
     }
 
+    public boolean isXStartEqual(Point p) {
+        if (this.getStart().equalX(p)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isXEndEqual(Point p) {
+        if (this.getEnd().equalX(p)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isXVertical() {
+        if (this.getStart().getX() - this.getEnd().getX() != 0) {
+            return true;
+        }
+        return false;
+    }
 
     public boolean equals(Line l){
         return (start.equals(l.getStart()) && end.equals(l.getEnd()))

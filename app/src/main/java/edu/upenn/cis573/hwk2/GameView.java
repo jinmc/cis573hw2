@@ -203,7 +203,8 @@ public class GameView extends View {
             if(newLine.equals(l)) continue;
             int left = 0, right = 0, top = 0, bottom = 0;
             // See if there is a parallel line to the new line
-            if (newLine.getStart().equalX(l.getStart()) && newLine.getEnd().equalX(l.getEnd()) && (newLine.getStart().getX() - newLine.getEnd().getX()) != 0) {
+            if (newLine.isXStartEqual(l.getStart()) && newLine.isXEndEqual(l.getEnd()) && newLine.isXVertical()) {
+//                    newLine.getStart().equalX(l.getStart()) && newLine.getEnd().equalX(l.getEnd()) && (newLine.getStart().getX() - newLine.getEnd().getX()) != 0) {
                 left = newLine.getStart().getX();
                 right = newLine.getEnd().getX();
                 top = Math.min(newLine.getStart().getY(), l.getStart().getY());

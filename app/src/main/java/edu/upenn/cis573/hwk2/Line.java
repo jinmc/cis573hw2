@@ -16,8 +16,31 @@ public class Line {
         return end;
     }
 
+    public boolean isParallel(Line l) {
+        if (l == null || this == null) {
+            return false;
+        }
+        // if they are parallel by vertically
+        if (isXStartEqual(l.getStart()) && isXEndEqual(l.getEnd()) && isXVertical()) {
+            return true;
+        // if they are parallel by horizontally
+        } else if (isYStartEqual(l.getStart()) && isYEndEqual(l.getEnd()) && isYHorizontal()) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     public boolean isXStartEqual(Point p) {
         if (this.getStart().equalX(p)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isYStartEqual(Point p) {
+        if (this.getStart().equalY(p)) {
             return true;
         }
         return false;
@@ -30,11 +53,41 @@ public class Line {
         return false;
     }
 
+    public boolean isYEndEqual(Point p) {
+        if (this.getEnd().equalY(p)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isYHorizontal() {
+        if (this.getStart().getY() - this.getEnd().getY() != 0) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean isXVertical() {
         if (this.getStart().getX() - this.getEnd().getX() != 0) {
             return true;
         }
         return false;
+    }
+
+    public int getXStart() {
+        return this.getStart().getX();
+    }
+
+    public int getXEnd() {
+        return this.getEnd().getX();
+    }
+
+    public int getYStart() {
+        return this.getStart().getY();
+    }
+
+    public int getYEnd() {
+        return this.getEnd().getY();
     }
 
     public boolean equals(Line l){
@@ -50,9 +103,6 @@ public class Line {
 //        return false;
 //    }
 
-    public boolean isParallel(Line l) {
-        return true;
-    }
 
     @Override
     public boolean equals(Object object)

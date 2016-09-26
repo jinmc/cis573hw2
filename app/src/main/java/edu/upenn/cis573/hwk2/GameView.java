@@ -203,19 +203,33 @@ public class GameView extends View {
             if(newLine.equals(l)) continue;
             int left = 0, right = 0, top = 0, bottom = 0;
             // See if there is a parallel line to the new line
-            if (newLine.isXStartEqual(l.getStart()) && newLine.isXEndEqual(l.getEnd()) && newLine.isXVertical()) {
+            if (newLine.isParallel(l)) {
+                left = Math.min(Math.min(newLine.getXStart(), newLine.getXEnd()), Math.min(l.getXStart(), l.getXEnd()));
+//                    newLine.isXStartEqual(l.getStart()) && newLine.isXEndEqual(l.getEnd()) && newLine.isXVertical()) {
 //                    newLine.getStart().equalX(l.getStart()) && newLine.getEnd().equalX(l.getEnd()) && (newLine.getStart().getX() - newLine.getEnd().getX()) != 0) {
-                left = newLine.getStart().getX();
-                right = newLine.getEnd().getX();
-                top = Math.min(newLine.getStart().getY(), l.getStart().getY());
-                bottom = Math.max(newLine.getStart().getY(), l.getStart().getY());
+//                left = newLine.getXStart();
+//                left = newLine.getStart().getX();
+                right = Math.max(Math.max(newLine.getXStart(), newLine.getXEnd()), Math.max(l.getXStart(), l.getXEnd()));
+//                right = newLine.getXEnd();
+//                right = newLine.getEnd().getX();
+                top = Math.min(Math.min(newLine.getYEnd(), newLine.getYStart()), Math.min(l.getYEnd(), l.getYStart()));
+//                top = Math.min(newLine.getYStart(), l.getYStart());
+//                top = Math.min(newLine.getStart().getY(), l.getStart().getY());
+                bottom = Math.max(Math.max(newLine.getYEnd(), newLine.getYEnd()), Math.max(l.getYEnd(), l.getYStart()));
+//                bottom = Math.max(newLine.getYStart(), l.getYStart());
+//                bottom = Math.max(newLine.getStart().getY(), l.getStart().getY());
             }
-            else if (newLine.getStart().equalY(l.getStart()) && newLine.getEnd().equalY(l.getEnd()) && (newLine.getStart().getY() - newLine.getEnd().getY()) != 0) {
-                top = newLine.getStart().getY();
-                bottom = newLine.getEnd().getY();
-                left = Math.min(newLine.getStart().getX(), l.getStart().getX());
-                right = Math.max(newLine.getStart().getX(), l.getStart().getX());
-            }
+//            else if (newLine.isYStartEqual(l.getStart()) && newLine.isYEndEqual(l.getEnd()) && newLine.isYHorizontal()) {
+////                    newLine.getStart().equalY(l.getStart()) && newLine.getEnd().equalY(l.getEnd()) && (newLine.getStart().getY() - newLine.getEnd().getY()) != 0) {
+//                top = newLine.getYStart();
+////                top = newLine.getStart().getY();
+//                bottom = newLine.getYEnd();
+////                bottom = newLine.getEnd().getY();
+//                left = Math.min(newLine.getXStart(), l.getXStart());
+////                left = Math.min(newLine.getStart().getX(), l.getStart().getX());
+//                right = Math.min(newLine.getYStart(), l.getXStart());
+////                right = Math.max(newLine.getStart().getX(), l.getStart().getX());
+//            }
             else continue;
             Line side1 = new Line(l.getStart(), newLine.getStart());
             Line side2 = new Line(l.getEnd(), newLine.getEnd());

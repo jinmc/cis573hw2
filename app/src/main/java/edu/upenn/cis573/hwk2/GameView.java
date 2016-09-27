@@ -21,9 +21,9 @@ public class GameView extends View {
     private double ySpace;
     private Bitmap dot;
     private Point[][] points;
-    private ArrayList<Line> p1Lines = new ArrayList<Line>();
+    private ArrayList<Line> p1Lines = new ArrayList<Line>(); // line arraylist for player 1
     private Paint p1LinesPaint = new Paint();
-    private ArrayList<Line> p2Lines = new ArrayList<Line>();
+    private ArrayList<Line> p2Lines = new ArrayList<Line>(); // line arraylist for player 2
     private Paint p2LinesPaint = new Paint();
     private boolean drawLine = false;
     private Point startPoint;
@@ -36,6 +36,7 @@ public class GameView extends View {
     private Line lastLine;
     private Rect lastRect;
     private boolean isP1LastTurn;
+    private Player player1, player2;
 
     public GameView(Context context) {
         super(context);
@@ -205,38 +206,17 @@ public class GameView extends View {
             // See if there is a parallel line to the new line
             if (newLine.isParallel(l)) {
                 left = Math.min(Math.min(newLine.getXStart(), newLine.getXEnd()), Math.min(l.getXStart(), l.getXEnd()));
-//                    newLine.isXStartEqual(l.getStart()) && newLine.isXEndEqual(l.getEnd()) && newLine.isXVertical()) {
-//                    newLine.getStart().equalX(l.getStart()) && newLine.getEnd().equalX(l.getEnd()) && (newLine.getStart().getX() - newLine.getEnd().getX()) != 0) {
-//                left = newLine.getXStart();
-//                left = newLine.getStart().getX();
                 right = Math.max(Math.max(newLine.getXStart(), newLine.getXEnd()), Math.max(l.getXStart(), l.getXEnd()));
-//                right = newLine.getXEnd();
-//                right = newLine.getEnd().getX();
                 top = Math.min(Math.min(newLine.getYEnd(), newLine.getYStart()), Math.min(l.getYEnd(), l.getYStart()));
-//                top = Math.min(newLine.getYStart(), l.getYStart());
-//                top = Math.min(newLine.getStart().getY(), l.getStart().getY());
                 bottom = Math.max(Math.max(newLine.getYEnd(), newLine.getYEnd()), Math.max(l.getYEnd(), l.getYStart()));
-//                bottom = Math.max(newLine.getYStart(), l.getYStart());
-//                bottom = Math.max(newLine.getStart().getY(), l.getStart().getY());
             }
-//            else if (newLine.isYStartEqual(l.getStart()) && newLine.isYEndEqual(l.getEnd()) && newLine.isYHorizontal()) {
-////                    newLine.getStart().equalY(l.getStart()) && newLine.getEnd().equalY(l.getEnd()) && (newLine.getStart().getY() - newLine.getEnd().getY()) != 0) {
-//                top = newLine.getYStart();
-////                top = newLine.getStart().getY();
-//                bottom = newLine.getYEnd();
-////                bottom = newLine.getEnd().getY();
-//                left = Math.min(newLine.getXStart(), l.getXStart());
-////                left = Math.min(newLine.getStart().getX(), l.getStart().getX());
-//                right = Math.min(newLine.getYStart(), l.getXStart());
-////                right = Math.max(newLine.getStart().getX(), l.getStart().getX());
-//            }
+
             else continue;
             Line side1 = new Line(l.getStart(), newLine.getStart());
             Line side2 = new Line(l.getEnd(), newLine.getEnd());
             //If the sides are drawn (i.e. there is a full box)
             if(
                     lines.contains(side1) && lines.contains(side2)) {
-//                    side1.isContained(lines) && side2.isContained(lines)){
                 Rect r = new Rect(left, top, right, bottom);
                 if(p1Rectangles.contains(r) || p2Rectangles.contains(r)) continue;
                 if(isP1Turn){

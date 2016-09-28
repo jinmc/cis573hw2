@@ -16,26 +16,23 @@ import android.widget.Toast;
 
 public class GameView extends View {
 
+    private Player currentPlayer;
     private int size;
     private double xSpace;
     private double ySpace;
     private Bitmap dot;
     private Point[][] points;
-//    private ArrayList<Line> p1Lines = new ArrayList<Line>(); // line arraylist for player 1. needs to be removed
     private Paint p1LinesPaint = new Paint();
-//    private ArrayList<Line> p2Lines = new ArrayList<Line>(); // line arraylist for player 2. needs to be removed
     private Paint p2LinesPaint = new Paint();
     private boolean drawLine = false;
     private Point startPoint;
     private Point currentEnd;
-//    private ArrayList<Rect> p1Rectangles = new ArrayList<Rect>(); // rectangle arraylist for player 1. needs to be removed.
     private Paint p1RectPaint = new Paint();
-//    private ArrayList<Rect> p2Rectangles = new ArrayList<Rect>(); // rectangle arraylist for player 2. needs to be removed.
     private Paint p2RectPaint = new Paint();
-    private boolean isP1Turn = true;
+//    private boolean isP1Turn = true; // if isp1turn == true, substitute with currentplayer to player1
     private Line lastLine;
     private Rect lastRect;
-    private boolean isP1LastTurn;
+//    private boolean isP1LastTurn;
     private Player player1, player2;
 
     public GameView(Context context) {
@@ -49,12 +46,8 @@ public class GameView extends View {
     }
 
     public void reset(){
-//        p1Lines = new ArrayList<Line>();
-//        p2Lines = new ArrayList<Line>();
-//        p1Rectangles = new ArrayList<Rect>();
-//        p2Rectangles = new ArrayList<Rect>();
         drawLine = false;
-        isP1Turn = true;
+//        isP1Turn = true;
         lastLine = null;
         lastRect = null;
         init();
@@ -63,19 +56,18 @@ public class GameView extends View {
 
     public void undo(){
         if(lastLine == null) return;
-        if(isP1LastTurn) {
-            player1.removeLine(lastLine);
-            if (lastRect != null) {
-                player2.removeRect(lastRect);
-            }
+//        if(isP1LastTurn) {
+//            currentPlayer = player1;
+//        } else {
+//            currentPlayer = player2;
+//        }
+
+        currentPlayer.removeLine(lastLine);
+        if (lastRect != null) {
+            currentPlayer.removeRect(lastRect);
         }
-        else {
-            player2.removeLine(lastLine);
-            if (lastRect != null) {
-                player2.removeRect(lastRect);
-            }
-        }
-        isP1Turn = isP1LastTurn;
+
+//        isP1Turn = isP1LastTurn;
         invalidate();
     }
 
@@ -158,7 +150,7 @@ public class GameView extends View {
 
         //draw moving line
         if(drawLine){
-            if(isP1Turn) {
+            if(currentPlayer == player1) {
                 c.drawLine(startPoint.getX(), startPoint.getY(), currentEnd.getX(), currentEnd.getY(), p1LinesPaint);
             } else {
                 c.drawLine(startPoint.getX(), startPoint.getY(), currentEnd.getX(), currentEnd.getY(), p2LinesPaint);
@@ -220,21 +212,17 @@ public class GameView extends View {
                 top = Math.min(Math.min(newLine.getYEnd(), newLine.getYStart()), Math.min(l.getYEnd(), l.getYStart()));
                 bottom = Math.max(Math.max(newLine.getYEnd(), newLine.getYEnd()), Math.max(l.getYEnd(), l.getYStart()));
             }
-
             else continue;
             Line side1 = new Line(l.getStart(), newLine.getStart());
             Line side2 = new Line(l.getEnd(), newLine.getEnd());
             //If the sides are drawn (i.e. there is a full box)
-            if(
-                    lines.contains(side1) && lines.contains(side2)) {
+            if(lines.contains(side1) && lines.contains(side2)) {
                 Rect r = new Rect(left, top, right, bottom);
                 if (player1.containRect(r) || player2.containRect(r)) continue;
-//                        (p1Rectangles.contains(r) || p2Rectangles.contains(r)) continue;
-                if(isP1Turn){
-                    player1.addRect(r);
-//                    p1Rectangles.add(r);
-                } else player2.addRect(r);
-//                    p2Rectangles.add(r);
+                currentPlayer.addRect(r);
+//                if(isP1Turn){
+//                    player1.addRect(r);
+//                } else player2.addRect(r);
                 lastRect = r;
                 invalidate();
                 isNewSquare = true;
@@ -268,18 +256,22 @@ public class GameView extends View {
                         l = new Line(startPoint, endPoint);
                     }
                     if( !player1.containLine(l) && !player2.containLine(l)) {
-//                            !p1Lines.contains(l) && !p2Lines.contains(l)) {
-//                            !l.isContained(p1Lines)&&!l.isContained(p2Lines)){
-                        if(isP1Turn) {
-                            player1.addLine(l);
+                        if (currentPlayer == player1) {
+                            currentPlayer = player2;
+                        } else {
+                            currentPlayer = player1;
                         }
-                        else {
-                            player2.addLine(l);
-                        }
+//                        if(isP1Turn) {
+//                            currentPlayer = player1;
+//                        }
+//                        else {
+//                            currentPlayer = player2;
+//                        }
+                        currentPlayer.addLine(l);
                         lastLine = l;
-                        isP1LastTurn =  isP1Turn;
+//                        isP1LastTurn =  isP1Turn;
                         if(!isNewSquare(l)){
-                            isP1Turn = !isP1Turn;
+//                            isP1Turn = !isP1Turn;
                             lastRect = null;
                         }
                     }
